@@ -335,6 +335,9 @@ static void check_and_set_gain_dep_cal()
             if (gain_dep_cal_level != -1) {
                 if (gain_dep_cal_level != current_gain_dep_cal_level) {
                     // decision made .. send new level now
+		    ALOGE("%s: GiAn: Trying to change in Cal::(old/new) Volume (%f/%f) (old/new) level (%d/%d)",
+                                  __func__, current_vol, new_vol, current_gain_dep_cal_level,
+                                  gain_dep_cal_level);
                     if (!send_gain_dep_cal(gain_dep_cal_level)) {
                         ALOGE("%s: Failed to set gain dep cal level", __func__);
                     } else {
