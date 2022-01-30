@@ -1653,6 +1653,7 @@ static const char *get_operator_specific_device_mixer_path(snd_device_t snd_devi
 static void update_codec_type_and_interface(struct platform_data * my_data,
      const char *snd_card_name)
 {
+     ALOGD("%s: GiAn TEST snd_card_name: %s",__func__,snd_card_name);
      if (!strncmp(snd_card_name, "sdm670-skuw-snd-card",
                   sizeof("sdm670-skuw-snd-card")) ||
          !strncmp(snd_card_name, "sdm660-snd-card",
@@ -1695,7 +1696,7 @@ static void update_codec_type_and_interface(struct platform_data * my_data,
                    sizeof("atoll-idp-snd-card")) ||
          !strncmp(snd_card_name, "atoll-qrd-snd-card",
                    sizeof("atoll-qrd-snd-card"))) {
-         ALOGI("%s: snd_card_name: %s",__func__,snd_card_name);
+         ALOGD("%s: GiAn snd_card_name: %s",__func__,snd_card_name);
          my_data->is_internal_codec = true;
          my_data->is_slimbus_interface = false;
      }
@@ -3148,6 +3149,11 @@ void *platform_init(struct audio_device *adev)
         my_data->hifi_audio = true;
     set_platform_defaults(my_data);
 
+    if (my_data->is_internal_codec)
+        ALOGD("%s: GiAn is_internal_codec TRUE\n", __func__);
+    else
+        ALOGD("%s: GiAn is_internal_codec FALSE\n", __func__);
+
     /* Initialize ACDB ID's */
     if (my_data->is_i2s_ext_modem && !is_auto_snd_card(snd_card_name))
         platform_info_init(PLATFORM_INFO_XML_PATH_I2S, my_data, PLATFORM);
@@ -3181,10 +3187,13 @@ void *platform_init(struct audio_device *adev)
     else if (!strncmp(snd_card_name, "sm8150-pcie-snd-card",
                sizeof("sm8150-pcie-snd-card")))
         platform_info_init(PLATFORM_INFO_XML_PATH_PCIE, my_data, PLATFORM);
-    else if (my_data->is_internal_codec)
+    else if (my_data->is_internal_codec) {
+        ALOGD("%s: GiAn OK dove mi aspettavo\n", __func__);
         platform_info_init(PLATFORM_INFO_XML_PATH_INTCODEC, my_data, PLATFORM);
+    }
     else {
         // Try to load pixel or default
+        ALOGD("%s: GiAn Huston abbiamo un problema\n", __func__);
         audio_extn_utils_get_platform_info(snd_card_name, platform_info_file);
         platform_info_init(platform_info_file, my_data, PLATFORM);
     }

@@ -1494,13 +1494,14 @@ int platform_info_init(const char *filename, void *platform, caller_t caller_typ
     char            platform_info_file_name[MIXER_PATH_MAX_LENGTH]= {0};
 
     pthread_mutex_lock(&parser_lock);
-    if (filename == NULL)
+    if (filename == NULL) {
+        ALOGD("%s: GiAn abbiamo un file NULL", __func__);
         strlcpy(platform_info_file_name, PLATFORM_INFO_XML_PATH,
                 MIXER_PATH_MAX_LENGTH);
-    else
+    } else
         strlcpy(platform_info_file_name, filename, MIXER_PATH_MAX_LENGTH);
 
-    ALOGV("%s: platform info file name is %s", __func__,
+    ALOGD("%s: GiAn platform info file name is %s", __func__,
           platform_info_file_name);
 
     file = fopen(platform_info_file_name, "r");
